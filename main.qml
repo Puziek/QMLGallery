@@ -6,23 +6,98 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("Hello World")
+    color: "black"
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
+    ListModel {
+        id: imageGalleryModel
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo01.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo02.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo03.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo04.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo05.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo06.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo07.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo08.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo01.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo02.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo03.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo04.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo05.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo06.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo07.jpg"
+        }
+        ListElement
+        {
+            source: "file:///C:/Users/kamil.puzio/Desktop/resources/Photo08.jpg"
+        }
+    }
+
+    TabView
+    {
+        id: tabView
+        anchors.fill: parent
+
+        Tab {
+            title: "GridView"
+            GridImageGallery {
+                model: imageGalleryModel
             }
         }
     }
 
-    Label {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "black"
+
+        StackView {
+            id: stackView
+            anchors.fill: background
+            initialItem: tabView
+        }
     }
 }
