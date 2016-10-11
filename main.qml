@@ -79,7 +79,6 @@ ApplicationWindow {
     TabView
     {
         id: tabView
-        anchors.fill: parent
 
         Tab {
             title: "GridView"

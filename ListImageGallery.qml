@@ -2,18 +2,17 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    anchors.top: parent.top
-    color: "black"
-    opacity: 0.5
+    anchors.fill: parent
+    color: "transparent"
 
     property variant model
 
     ListView {
         id: listImageGallery
-        model: root.model
+        model: imageGalleryModel
         anchors.fill: root
         orientation: ListView.Horizontal
         snapMode: ListView.SnapToItem
-        delegate: ImageDelegate { imagePath: source; hostView: tabView }
+        delegate: ImageDelegate { imagePath: source; hostView: tabView; width: 75; height: 75 }
     }
 }

@@ -15,4 +15,9 @@ Rectangle {
         cellHeight: 160
         cellWidth: 160
     }
+
+    ContentView {
+        id: contentView
+        visible: false
+    }
 }

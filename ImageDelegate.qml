@@ -16,6 +16,7 @@ Rectangle {
         id: content
         width: imageDelegate.width
         height: imageDelegate.height
+        fillMode: Image.PreserveAspectCrop
         source: imagePath
         anchors.centerIn: imageDelegate
     }
@@ -26,18 +27,22 @@ Rectangle {
         hoverEnabled: true
         onClicked: {
             if (hostView !== undefined) {
-                hostView.currentIndex = index
+                contentView.imagePath = imagePath
+                if (stackView.depth >= 2) {          // WORST WORKAROUND EVER :(
+                    stackView.pop()
+                    stackView.push({item: contentView, immediate: true})
+                }
+                else {
+                    stackView.push(contentView)
+                }
             }
-            var component = Qt.createComponent("ContentView.qml");
-            component.createObject(imageDelegate)
-            stackView.push(component.createObject(parent, {"imagePath": imageDelegate.imagePath}))
         }
     }
 
     states: [
         State {
             name: "active"
-            when: mouseArea.containsMouse || imageDelegate.isCurrentItem
+            when: mouseArea.containsMouse
             PropertyChanges {
                 target: content
                 scale: 1.1
