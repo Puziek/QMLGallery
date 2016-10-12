@@ -4,7 +4,9 @@ QT += qml quick
 
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    imagegallerymodel.cpp \
+    imagedescriptor.cpp
 
 RESOURCES += qml.qrc
 
@@ -17,3 +19,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES +=
+
+HEADERS += \
+    imagegallerymodel.h \
+    imagedescriptor.h

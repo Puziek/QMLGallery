@@ -6,5 +6,8 @@
         <file>ListImageGallery.qml</file>
         <file>ContentView.qml</file>
         <file>ExpandingPanel.qml</file>
+        <file>Resources/PhotosTabNormal.png</file>
+        <file>Resources/PhotosTabSelected.png</file>
+        <file>FancyButton.qml</file>
     </qresource>
 </RCC>
