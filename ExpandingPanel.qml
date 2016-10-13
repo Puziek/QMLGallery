@@ -4,9 +4,8 @@ Rectangle {
     id: root
 
     width: parent.width
-    height: 75
+    height: 60
     state: "hidden"
-    opacity: 0
 
     property variant mouseArea
     property variant anchorTopExpanded
@@ -32,7 +31,7 @@ Rectangle {
             }
             PropertyChanges {
                 target: root
-                opacity: 0.7
+                opacity: 1
             }
         },
         State {

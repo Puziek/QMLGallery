@@ -19,7 +19,8 @@ Rectangle {
 
 
         states: State {
-            name: "selected"; when: styleData.selected
+            name: "selected"
+            when: styleData.selected
             PropertyChanges { target: imageNormal; opacity: 0}
             PropertyChanges { target: imageSelected; opacity: 1}
         }
@@ -44,4 +45,4 @@ Rectangle {
         text: styleData.title
         color: "white"
     }
-                }
+}

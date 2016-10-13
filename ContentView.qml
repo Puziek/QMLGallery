@@ -1,15 +1,26 @@
 import QtQuick 2.0
+import QmlGallery 1.0
 
 Rectangle {
     id: root
     color: "transparent"
 
     property string imagePath
+    property int currentIdx: -1
 
     Image {
+        id: content
         anchors.fill: root
         source: root.imagePath
     }
+
+    onImagePathChanged:
+        PropertyAnimation {
+            target: content
+            property: "opacity"
+            from: 0
+            to: 1
+        }
 
     MouseArea {
         id: mouseArea
@@ -31,10 +42,14 @@ Rectangle {
         anchorTopExpanded: root.top
         anchorBottomExpanded: undefined
 
-        ListImageGallery {
+        Image {
             anchors.fill: photosExpandingPanel
-            opacity: 0.7
+            source: "/Resources/photodetails-navbg.png"
         }
+            ListImageGallery {
+                currentIdx: root.currentIdx
+                anchors.fill: parent
+            }
     }
 
     ExpandingPanel {
@@ -45,10 +60,11 @@ Rectangle {
         anchorTopExpanded: undefined
         anchorBottomExpanded: root.bottom
 
-        Rectangle {
-            anchors.fill: controlExpandingPanel
-            color: "black"
-            opacity: 0.7
+        Image {
+            anchors.bottom: controlExpandingPanel.bottom
+            height: 85
+            width: parent.width
+            source: "/Resources/photos-bottommenu-bg.png"
         }
     }
 

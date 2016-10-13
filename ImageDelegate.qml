@@ -6,37 +6,24 @@ Rectangle {
     id: imageDelegate
     color: "transparent"
 
-    width: 150
-    height: 150
+    width: 140
+    height: 140
+
+    signal clicked(int idx)
+    signal doubleClicked()
 
     property string imagePath
-    property bool selectable: false
 
     function singleClick() {
-        if (!gridImageGallery.selectionMode || !selectable) {
-            contentView.imagePath = imagePath
-            if (stackView.depth >= 2) {          // WORST WORKAROUND EVER :(
-                stackView.pop()
-                stackView.push({item: contentView, immediate: true})
-            }
-            else {
-                stackView.push(contentView)
-            }
-        }
-        else
-            imageGalleryModel.selectImage(index)
+        imageDelegate.clicked(index)
     }
 
     function doubleClick() {
-        if (selectable) {
-            gridImageGallery.selectionMode = !gridImageGallery.selectionMode
-            controlExpandingPanel.show()
-        }
+        imageDelegate.doubleClicked()
     }
 
     Image {
         id: content
-
         Behavior on opacity { NumberAnimation{} }
 
         width: imageDelegate.width
@@ -44,6 +31,10 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
         source: imagePath
         anchors.centerIn: imageDelegate
+
+        Drag.active: mouseArea.drag.active
+        Drag.hotSpot.x: content.width / 2
+        Drag.hotSpot.y: content.height / 2
     }
 
 
@@ -51,6 +42,14 @@ Rectangle {
         id: mouseArea
         anchors.fill: content
         hoverEnabled: true
+
+        drag.target: content
+        drag.onActiveChanged: {
+            if (mouseArea.drag.active) {
+                gridImageGallery.dragItemIndex = index;
+            }
+            content.Drag.drop();
+        }
         Timer {
             id: timer
             interval: 200
@@ -79,7 +78,7 @@ Rectangle {
         },
         State {
             name: "selected"
-            when: isSelected && gridImageGallery.selectionMode
+            when: isSelected && !content.Drag.active && gridImageGallery.selectionMode
             PropertyChanges {
                 target: content
                 opacity: 1
@@ -87,10 +86,18 @@ Rectangle {
         },
         State {
             name: "unselected"
-            when: !isSelected && gridImageGallery.selectionMode
+            when: !isSelected & !content.Drag.active && gridImageGallery.selectionMode
             PropertyChanges {
                 target: content
                 opacity: 0.5
+            }
+        },
+        State {
+            name: "dragged"
+            when: content.Drag.active && isSelected && gridImageGallery.selectionMode
+            ParentChange {
+                target: content
+                parent: gridImageGallery.parent
             }
         }
     ]

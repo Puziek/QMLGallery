@@ -23,9 +23,23 @@ public:
     QHash<int,QByteArray> roleNames() const;
 
     Q_INVOKABLE void selectImage(int index);
+    Q_INVOKABLE void remove(int index);
     Q_INVOKABLE void deselectAll();
 
+    int currentIndex();
+    void setCurrentIndex(int index);
+
+signals:
+    void currentIndexChanged();
+
 private:
+
+    struct QProperties {
+        int currentIndex;
+    };
+
+    QProperties properties;
+
     QList<ImageDescriptor> images;
 
     // QAbstractItemModel interface

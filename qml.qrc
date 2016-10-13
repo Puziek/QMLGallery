@@ -9,5 +9,14 @@
         <file>Resources/PhotosTabNormal.png</file>
         <file>Resources/PhotosTabSelected.png</file>
         <file>FancyButton.qml</file>
+        <file>Resources/photos-delete-ico-large.png</file>
+        <file>Resources/photos-favs-ico-large.png</file>
+        <file>ImageListDelegate.qml</file>
+        <file>Resources/photodetails-nav-frame.png</file>
+        <file>Resources/photodetails-navbg.png</file>
+        <file>Resources/bottomMask.png</file>
+        <file>Resources/PreviewBottomBar.png</file>
+        <file>Resources/photos-bottommenu-bg.png</file>
+        <file>MenuBarButton.qml</file>
     </qresource>
 </RCC>
