@@ -1,8 +1,7 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: root
-    color: "transparent"
     opacity: 0.6
 
     property string imgSource

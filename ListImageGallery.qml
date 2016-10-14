@@ -1,10 +1,9 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 
-Rectangle {
+Item {
     id: root
     anchors.fill: parent
-    color: "transparent"
 
     property variant model
     property int currentIdx: -1
@@ -12,15 +11,24 @@ Rectangle {
 
     ListView {
         id: listImageGallery
+
+        property real velocity: 400
+
         model: imageGalleryModel
         anchors.fill: root
         orientation: ListView.Horizontal
         currentIndex: currentIdx
         highlight: highlight
+        highlightMoveVelocity: velocity
 
         delegate: ImageListDelegate {
             imagePath: source
             opacity: ListView.isCurrentItem ? 1 : 0.5
+            onClicked: {
+                listImageGallery.velocity = Math.abs((index - listImageGallery.currentIndex) / 0.05) * 20
+                contentView.imagePath = imagePath
+                listImageGallery.currentIndex = index
+            }
         }
     }
 

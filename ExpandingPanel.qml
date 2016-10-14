@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: root
 
     width: parent.width
@@ -18,8 +18,6 @@ Rectangle {
     function show() {
         state = (state == "hidden" ? "expanded" : "hidden")
     }
-
-    color: "transparent"
 
     states: [
         State {

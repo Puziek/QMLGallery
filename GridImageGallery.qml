@@ -9,6 +9,7 @@ Rectangle {
     color: "black"
 
     property variant model
+    property var selectedImages: []
 
     GridView {
         id: gridImageGallery
@@ -39,6 +40,9 @@ Rectangle {
             onDoubleClicked: {
                 gridImageGallery.selectionMode = !gridImageGallery.selectionMode
                 controlExpandingPanel.show()
+            }
+            onDragged: {
+                gridImageGallery.dragItemIndex = index
             }
         }
         cellHeight: 150

@@ -1,11 +1,10 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 
-Rectangle {
+Item {
     id: root
     opacity: 0.85
 
-    color: "transparent"
     implicitWidth: Math.max(text.width + 4, 150)
     implicitHeight: 50
 

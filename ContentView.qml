@@ -1,9 +1,8 @@
 import QtQuick 2.0
 import QmlGallery 1.0
 
-Rectangle {
+Item {
     id: root
-    color: "transparent"
 
     property string imagePath
     property int currentIdx: -1

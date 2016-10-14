@@ -2,12 +2,13 @@ import QtQuick 2.0
 import QtQml.Models 2.2
 import QmlGallery 1.0
 
-Rectangle {
+Item {
     id: imageListDelegate
-    color: "transparent"
 
     width: 62
     height: 62
+
+    signal clicked(int idx)
 
     property string imagePath
 
@@ -32,8 +33,7 @@ Rectangle {
             onTriggered: singleClick()
         }
         onClicked: {
-            contentView.imagePath = imagePath
-            listImageGallery.currentIndex = index
+            imageListDelegate.clicked(index)
         }
     }
 }

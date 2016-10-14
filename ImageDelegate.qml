@@ -2,15 +2,15 @@ import QtQuick 2.0
 import QtQml.Models 2.2
 import QmlGallery 1.0
 
-Rectangle {
+Item {
     id: imageDelegate
-    color: "transparent"
 
     width: 140
     height: 140
 
     signal clicked(int idx)
     signal doubleClicked()
+    signal dragged(int idx);
 
     property string imagePath
 
@@ -46,7 +46,7 @@ Rectangle {
         drag.target: content
         drag.onActiveChanged: {
             if (mouseArea.drag.active) {
-                gridImageGallery.dragItemIndex = index;
+                imageDelegate.dragged(index);
             }
             content.Drag.drop();
         }
@@ -67,6 +67,7 @@ Rectangle {
         }
     }
 
+    // Not the best way, introduce better encapsulation
     states: [
         State {
             name: "active"
