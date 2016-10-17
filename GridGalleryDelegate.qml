@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: root
 
-    property string imageSource: source
+    property string imageSource: ""
     property bool selectionEnabled: false
 
     signal clicked(int idx)

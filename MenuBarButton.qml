@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Item {
     id: root
-    opacity: 0.6
+    property bool active: false
 
     property string imgSource
 
@@ -13,21 +13,40 @@ Item {
         source: root.imgSource
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: { console.debug("TEST") }
-        onReleased: { console.debug("KURDE") }
-    }
-
     states: [
         State {
             name: "active"
-            when: mouseArea.containsMouse
+            when: root.active
             PropertyChanges {
                 target: root
                 opacity: 1
+            }
+            PropertyChanges {
+                target: root
+                scale: 1.2
+            }
+        },
+        State {
+            name: "unactive"
+            when: !root.active
+            PropertyChanges {
+                target: root
+                opacity: 0.5
+            }
+            PropertyChanges {
+                target: root
+                scale: 1
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            PropertyAnimation {
+                target: root
+                properties: "scale"
+                duration: 500
+                easing.type: Easing.OutQuart
             }
         }
     ]

@@ -4,8 +4,7 @@
 #include <QObject>
 
 class ImageDescriptor
-{
-
+{    
 public:
     explicit ImageDescriptor(QString src);
 

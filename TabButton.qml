@@ -1,15 +1,21 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
+import QtGraphicalEffects 1.0
 
 Item {
     id: root
-    opacity: 0.85
 
     implicitWidth: Math.max(text.width + 4, 150)
     implicitHeight: 50
 
     property string normalImage
     property string selectedImage
+
+    Rectangle {
+        id: background
+        anchors.fill: root
+        color: "black"
+    }
 
     Image {
         id: imageNormal

@@ -55,7 +55,7 @@ ImageGalleryModel::ImageGalleryModel(QObject *parent) : QAbstractListModel(paren
 
 QVariant ImageGalleryModel::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < rowCount(index)) {
+    if (index.row() < rowCount()) {
         switch (role) {
         case sourceRole:
             return images.at(index.row()).getSource();
@@ -68,7 +68,7 @@ QVariant ImageGalleryModel::data(const QModelIndex &index, int role) const
 
 bool ImageGalleryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (index.row() < rowCount(index)) {
+    if (index.row() < rowCount()) {
         switch (role) {
         case sourceRole:
             return false;
@@ -91,6 +91,25 @@ QHash<int, QByteArray> ImageGalleryModel::roleNames() const
     roles[sourceRole]= "source";
     roles[selectedRole] = "selected";
     return roles;
+}
+
+void ImageGalleryModel::deselectAll()
+{
+    for (int index : selectedIndexes()) {
+        images[index].setSelection(false);
+        emit dataChanged(createIndex(index, 0), createIndex(index, 0));
+    }
+}
+
+void ImageGalleryModel::removeSelected()
+{
+    for (int index = images.size() - 1; index > 0; --index) {
+        if (images[index].getSelection()) {
+            beginRemoveRows(QModelIndex(), index, index);
+            images.removeAt(index);
+            endRemoveRows();
+        }
+    }
 }
 
 int ImageGalleryModel::selectedCount()

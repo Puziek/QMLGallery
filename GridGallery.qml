@@ -21,8 +21,9 @@ Item {
     }
 
     function doubleClick() {
-        selectionMode = selectionMode ? false : true
+        root.selectionMode = root.selectionMode ? false : true
         controlExpandingPanel.show()
+        root.viewModel.deselectAll()
         console.log("Selection mode on: " + selectionMode)
     }
 
@@ -38,6 +39,7 @@ Item {
             id: gridGalleryDelegate
             width: 140
             height: 140
+            imageSource: source
 
             selectionEnabled: root.selectionMode
 
@@ -53,8 +55,6 @@ Item {
             }
         }
     }
-
-    Drag.active: gridMouseArea.drag.active
 
     MouseArea {
         id: gridMouseArea
@@ -92,11 +92,13 @@ Item {
             if (root.dragOn === true) {
                 root.dragOn = false
                 dragFrame.visible = false
-                if (!dropFav.visible) {         // TEMPORARY
-                    console.debug("Add to Fav")
+                if (dropFav.active) {
+                    console.debug("Add to Fav: " + root.viewModel.selectedIndexes())
+                    root.viewModel.deselectAll()
                 }
-                if (!dropRemove.visible) {
-                    console.debug("Remove")
+                if (dropRemove.active) {
+                    console.debug("Remove" + root.viewModel.selectedIndexes())
+                    root.viewModel.removeSelected();
                 }
             }
         }
@@ -104,8 +106,8 @@ Item {
 
     OpacityMask {
         height: 100
-        width: parent.width
-        anchors.bottom: parent.bottom
+        width: root.width
+        anchors.bottom: root.bottom
         maskSource: Image {
             anchors.fill: parent
             source: "/Resources/bottomMask.png"
@@ -118,7 +120,7 @@ Item {
         anchorBottomHidden: undefined
         anchorTopExpanded: undefined
         anchorBottomExpanded: root.bottom
-        height: 96
+        height: 85
 
         Rectangle {
             anchors.fill: controlExpandingPanel
@@ -132,14 +134,14 @@ Item {
                     width: controlExpandingPanel.width / 2
                     height: controlExpandingPanel.height
                     imgSource: "/Resources/photos-favs-ico-large.png"
+                    active: dropFav.active
 
                     Rectangle {
                         id: dropFav
                         anchors.fill: favsBarButton
-                        color: "green"
-                        opacity: 0.5
+                        color: "transparent"
 
-                        visible: !contains(mapFromItem(gridMouseArea, gridMouseArea.mouseX, gridMouseArea.mouseY))
+                        property bool active: contains(mapFromItem(gridMouseArea, gridMouseArea.mouseX, gridMouseArea.mouseY))
                     }
                 }
 
@@ -148,74 +150,29 @@ Item {
                     width: controlExpandingPanel.width / 2
                     height: controlExpandingPanel.height
                     imgSource: "/Resources/photos-delete-ico-large.png"
+                    active: dropRemove.active
 
                     Rectangle {
                         id: dropRemove
                         anchors.fill: removeBarButton
-                        color: "red"
-                        opacity: 0.5
+                        color: "transparent"
 
-                        visible: !contains(mapFromItem(gridMouseArea, gridMouseArea.mouseX, gridMouseArea.mouseY))
+                        property bool active: contains(mapFromItem(gridMouseArea, gridMouseArea.mouseX, gridMouseArea.mouseY))
                     }
                 }
             }
         }
     }
 
-    Item {
+    DragFrame {
         id: dragFrame
         x: gridMouseArea.mouseX - 60
         y: gridMouseArea.mouseY - 60
-        width: 125
-        height: 125
+
+        indexes: root.viewModel.selectedIndexes()
+        viewModel: root.viewModel
+
         visible: false
         enabled: false
-
-        property var indexes: root.viewModel.selectedIndexes()
-        property int count: 0
-
-        function show() {
-            visible = true
-            indexes = root.viewModel.selectedIndexes()
-        }
-
-        Repeater {
-            model: (dragFrame.count <= 3) ? dragFrame.count : 3
-
-            Image {
-                id: frame
-                z: -index
-                anchors.left: dragFrame.left
-                anchors.bottom: dragFrame.bottom
-                anchors.leftMargin: index * 20
-                anchors.bottomMargin: index * 20
-                width: 125
-                height: 125
-                source: "/Resources/photos-drag-frame.png"
-
-                Image {
-                    anchors.centerIn: frame
-                    width: 100
-                    height: 100
-                    source: root.viewModel.sourceFromIndex(dragFrame.indexes[index])
-                    fillMode: Image.PreserveAspectCrop
-                }
-            }
-        }
-
-        Image {
-            anchors.right: dragFrame.right
-            anchors.bottom: dragFrame.bottom
-            width: 47
-            height: 47
-
-            Label {
-                anchors.centerIn: parent
-                text: dragFrame.count
-                color: "white"
-            }
-
-            source: "/Resources/photos-drag-count.png"
-        }
     }
 }

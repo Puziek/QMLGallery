@@ -24,6 +24,8 @@ public:
 
     QHash<int,QByteArray> roleNames() const;
 
+    Q_INVOKABLE void deselectAll();
+    Q_INVOKABLE void removeSelected();
     Q_INVOKABLE int selectedCount();
     Q_INVOKABLE QString sourceFromIndex(int index);
     Q_INVOKABLE QList<int> selectedIndexes();
