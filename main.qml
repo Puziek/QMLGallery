@@ -38,13 +38,12 @@ ApplicationWindow {
             Tab { title: "Dick knows" }
 
             style: TabViewStyle {
-                frameOverlap: 1
                 tab: TabButton {
                     implicitWidth: background.width / tabView.count
                     normalImage: "/Resources/PhotosTabNormal.png"
                     selectedImage: "/Resources/PhotosTabSelected.png"
                 }
-                frame: Rectangle { color: "transparent" }
+                frame: Rectangle { color: "black" }
             }
         }
 

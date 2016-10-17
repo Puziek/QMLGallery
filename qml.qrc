@@ -20,5 +20,6 @@
         <file>MenuBarButton.qml</file>
         <file>Resources/photos-drag-count.png</file>
         <file>Resources/photos-drag-frame.png</file>
+        <file>DragFrame.qml</file>
     </qresource>
 </RCC>
