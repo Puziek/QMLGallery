@@ -9,16 +9,13 @@ class ImageDescriptor
 public:
     explicit ImageDescriptor(QString src);
 
-    bool getSelection() const;
     QString getSource() const;
-
-    void changeSelection();
-    void changeSelection(bool val);
+    bool getSelection() const;
+    void setSelection(bool selection);
 
 private:
     QString source;
     bool isSelected;
-
 };
 
 #endif // IMAGEDESCRIPTOR_H

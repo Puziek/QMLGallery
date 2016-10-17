@@ -1,7 +1,7 @@
 #include "imagegallerymodel.h"
-#include <QDebug>
+#include "QDebug"
 
-ImageGalleryModel::ImageGalleryModel(QObject *parent) : QAbstractItemModel(parent)
+ImageGalleryModel::ImageGalleryModel(QObject *parent) : QAbstractListModel(parent)
 {
     images.push_front(ImageDescriptor(QString("file:///C:/Users/kamil.puzio/Desktop/resources/Photo01.jpg")));
     images.push_front(ImageDescriptor(QString("file:///C:/Users/kamil.puzio/Desktop/resources/Photo02.jpg")));
@@ -66,7 +66,21 @@ QVariant ImageGalleryModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int ImageGalleryModel::rowCount(const QModelIndex& /*parent*/) const
+bool ImageGalleryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.row() < rowCount(index)) {
+        switch (role) {
+        case sourceRole:
+            return false;
+        case selectedRole:
+            images[index.row()].setSelection(value.toBool());
+            return true;
+        }
+    }
+    return false;
+}
+
+int ImageGalleryModel::rowCount(const QModelIndex &parent) const
 {
     return images.size();
 }
@@ -75,41 +89,51 @@ QHash<int, QByteArray> ImageGalleryModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[sourceRole]= "source";
-    roles[selectedRole] = "isSelected";
+    roles[selectedRole] = "selected";
     return roles;
 }
 
-void ImageGalleryModel::selectImage(int index)
+int ImageGalleryModel::selectedCount()
 {
-    qDebug() << index;
-    images[index].changeSelection();
-    emit dataChanged(createIndex(index, 0), createIndex(index, 0));
-}
+    int count = 0;
 
-void ImageGalleryModel::remove(int index)
-{
-    images.removeAt(index);
-    emit dataChanged(createIndex(0, 0), createIndex(images.count(), 0));
-}
-
-void ImageGalleryModel::deselectAll()
-{
-    for (ImageDescriptor& imageDesc : images) {
-        imageDesc.changeSelection(false);
+    for (const ImageDescriptor& image : images) {
+        if (image.getSelection()) {
+            count++;
+        }
     }
+
+    return count;
 }
 
-QModelIndex ImageGalleryModel::index(int row, int /*column*/, const QModelIndex& /*parent*/) const
+QString ImageGalleryModel::sourceFromIndex(int index)
 {
-    return createIndex(row, 0);
+    return images[index].getSource();
 }
 
-QModelIndex ImageGalleryModel::parent(const QModelIndex& /*child*/) const
+QList<int> ImageGalleryModel::selectedIndexes()
 {
-    return QModelIndex();
+    QList<int> indexes;
+    int count = 0;
+    for (const ImageDescriptor& image : images) {
+        if (image.getSelection()) {
+            indexes.append(count);
+        }
+        count++;
+    }
+
+    return indexes;
 }
 
-int ImageGalleryModel::columnCount(const QModelIndex& /*parent*/) const
+int ImageGalleryModel::currentIndex()
 {
-    return 1;
+    return properties.currentIndex;
+}
+
+void ImageGalleryModel::setCurrentIndex(int index)
+{
+    if (index != properties.currentIndex) {
+        properties.currentIndex = index;
+        emit currentIndexChanged();
+    }
 }

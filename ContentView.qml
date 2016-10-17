@@ -1,41 +1,62 @@
 import QtQuick 2.0
-import QmlGallery 1.0
 
 Item {
     id: root
+    state: "hidden"
 
-    property string imagePath
-    property int currentIdx: -1
+    property string imageSource
+    property variant viewModel: undefined
 
-    Image {
-        id: content
-        anchors.fill: root
-        source: root.imagePath
+    function show() {
+        state = (state == "hidden" ? "expanded" : "hidden")
+        enabled = (enabled == false ? true : false)
     }
 
-    onImagePathChanged:
-        PropertyAnimation {
-            target: content
-            property: "opacity"
-            from: 0
-            to: 1
+    Rectangle {
+        id: image
+        anchors.fill: root
+        color: "black"
+
+        Image {
+            id: content
+            anchors.fill: image
+            source: root.imageSource
+            fillMode: Image.PreserveAspectFit
         }
+    }
 
     MouseArea {
-        id: mouseArea
+        id: contentViewMouseArea
         anchors.fill: root
-        hoverEnabled: true
-        onClicked: {
-            photosExpandingPanel.show()
-            controlExpandingPanel.show()
-        }
-        onDoubleClicked: { stackView.pop() }
 
+        Timer {
+            id: mouseTimer
+            interval: 200
+            onTriggered: {              // single click
+                photosExpandingPanel.show()
+                controlExpandingPanel.show()
+            }
+        }
+
+        onClicked: {
+            if (mouse.button === Qt.LeftButton) {
+                if(mouseTimer.running) {
+                    show()              // double click
+                    photosExpandingPanel.state = "hidden"
+                    controlExpandingPanel.state = "hidden"
+                    mouseTimer.stop()
+                }
+                else {
+                    mouseTimer.restart()
+                    mouse.accepted = false
+                }
+            }
+        }
     }
 
     ExpandingPanel {
         id: photosExpandingPanel
-        mouseArea: mouseArea
+        mouseArea: contentViewMouseArea
         anchorTopHidden: undefined
         anchorBottomHidden: root.top
         anchorTopExpanded: root.top
@@ -45,15 +66,19 @@ Item {
             anchors.fill: photosExpandingPanel
             source: "/Resources/photodetails-navbg.png"
         }
-            ListImageGallery {
-                currentIdx: root.currentIdx
-                anchors.fill: parent
+
+        ListGallery {
+            viewModel: root.viewModel
+            anchors.fill: photosExpandingPanel
+            onCurrentIndexChanged: {
+                root.imageSource = source
             }
+        }
     }
 
     ExpandingPanel {
         id: controlExpandingPanel
-        mouseArea: mouseArea
+        mouseArea: contentViewMouseArea
         anchorTopHidden: root.bottom
         anchorBottomHidden: undefined
         anchorTopExpanded: undefined
@@ -67,4 +92,31 @@ Item {
         }
     }
 
+    states: [
+        State {
+            name: "expanded"
+            PropertyChanges {
+                target: image
+                opacity: 1
+            }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: image
+                opacity: 0
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            PropertyAnimation {
+                target: image
+                properties: "opacity"
+                duration: 500
+                easing.type: Easing.OutQuart
+            }
+        }
+    ]
 }

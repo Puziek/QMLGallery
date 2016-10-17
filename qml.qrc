@@ -1,22 +1,24 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>ImageDelegate.qml</file>
-        <file>GridImageGallery.qml</file>
-        <file>ListImageGallery.qml</file>
-        <file>ContentView.qml</file>
-        <file>ExpandingPanel.qml</file>
-        <file>Resources/PhotosTabNormal.png</file>
-        <file>Resources/PhotosTabSelected.png</file>
-        <file>FancyButton.qml</file>
+        <file>GridGallery.qml</file>
+        <file>GridGalleryDelegate.qml</file>
+        <file>TabButton.qml</file>
+        <file>Resources/bottomMask.png</file>
+        <file>Resources/photodetails-navbg.png</file>
+        <file>Resources/photodetails-nav-frame.png</file>
+        <file>Resources/photos-bottommenu-bg.png</file>
         <file>Resources/photos-delete-ico-large.png</file>
         <file>Resources/photos-favs-ico-large.png</file>
-        <file>ImageListDelegate.qml</file>
-        <file>Resources/photodetails-nav-frame.png</file>
-        <file>Resources/photodetails-navbg.png</file>
-        <file>Resources/bottomMask.png</file>
+        <file>Resources/PhotosTabNormal.png</file>
+        <file>Resources/PhotosTabSelected.png</file>
         <file>Resources/PreviewBottomBar.png</file>
-        <file>Resources/photos-bottommenu-bg.png</file>
+        <file>ContentView.qml</file>
+        <file>ExpandingPanel.qml</file>
+        <file>ListGallery.qml</file>
+        <file>ListGalleryDelegate.qml</file>
         <file>MenuBarButton.qml</file>
+        <file>Resources/photos-drag-count.png</file>
+        <file>Resources/photos-drag-frame.png</file>
     </qresource>
 </RCC>

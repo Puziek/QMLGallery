@@ -6,22 +6,17 @@ ImageDescriptor::ImageDescriptor(QString src) :
 {
 }
 
-bool ImageDescriptor::getSelection() const
-{
-    return isSelected;
-}
-
 QString ImageDescriptor::getSource() const
 {
     return source;
 }
 
-void ImageDescriptor::changeSelection()
+bool ImageDescriptor::getSelection() const
 {
-    isSelected = !isSelected;
+    return isSelected;
 }
 
-void ImageDescriptor::changeSelection(bool val)
+void ImageDescriptor::setSelection(bool selection)
 {
-    isSelected = val;
+    isSelected = selection;
 }

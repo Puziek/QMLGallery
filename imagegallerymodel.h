@@ -2,10 +2,10 @@
 #define IMAGEGALLERYMODEL_H
 
 #include <QObject>
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 #include <imagedescriptor.h>
 
-class ImageGalleryModel : public QAbstractItemModel
+class ImageGalleryModel : public QAbstractListModel
 {
     Q_OBJECT
     enum Roles {
@@ -13,18 +13,20 @@ class ImageGalleryModel : public QAbstractItemModel
         selectedRole
     };
 
+    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+
 public:
     ImageGalleryModel(QObject* parent = nullptr);
 
-    // pure virtuals implementations
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const ;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
     QHash<int,QByteArray> roleNames() const;
 
-    Q_INVOKABLE void selectImage(int index);
-    Q_INVOKABLE void remove(int index);
-    Q_INVOKABLE void deselectAll();
+    Q_INVOKABLE int selectedCount();
+    Q_INVOKABLE QString sourceFromIndex(int index);
+    Q_INVOKABLE QList<int> selectedIndexes();
 
     int currentIndex();
     void setCurrentIndex(int index);
@@ -41,12 +43,6 @@ private:
     QProperties properties;
 
     QList<ImageDescriptor> images;
-
-    // QAbstractItemModel interface
-public:
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    int columnCount(const QModelIndex &parent) const;
 };
 
 #endif // IMAGEGALLERYMODEL_H

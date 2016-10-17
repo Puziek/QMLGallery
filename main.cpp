@@ -1,14 +1,13 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
-#include <QQmlEngine>
-#include "imagegallerymodel.h"
+#include <imagegallerymodel.h>
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-    qmlRegisterType<ImageGalleryModel>("QmlGallery", 1, 0, "ImageGalleryModel");
+    qmlRegisterType<ImageGalleryModel>("QmlGalleryModel", 1, 0, "GalleryModel");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

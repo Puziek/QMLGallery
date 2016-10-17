@@ -5,32 +5,30 @@ Item {
     id: root
     anchors.fill: parent
 
-    property variant model
-    property int currentIdx: -1
+    property variant viewModel: undefined
+    signal currentIndexChanged(string source)
 
     ListView {
-        id: listImageGallery
+        id: listGallery
 
         property real velocity: 400
 
-        model: imageGalleryModel
+        model: root.viewModel
+        currentIndex: root.viewModel.currentIndex
         anchors.fill: root
         orientation: ListView.Horizontal
-        currentIndex: currentIdx
         highlight: highlight
         highlightMoveVelocity: velocity
 
-        onCurrentIndexChanged: {
-            console.debug("ListImageGalleryIndex:" + currentIndex)
-        }
+        delegate: ListGalleryDelegate {
+            width: 62
+            height: 62
 
-        delegate: ImageListDelegate {
-            imagePath: source
             opacity: ListView.isCurrentItem ? 1 : 0.5
             onClicked: {
-                listImageGallery.velocity = Math.abs((index - listImageGallery.currentIndex) / 0.05) * 20
-                contentView.imagePath = imagePath
-                listImageGallery.currentIndex = index;
+                listGallery.velocity = Math.abs((index - root.viewModel.currentIndex) / 0.05) * 20
+                root.viewModel.currentIndex = index
+                root.currentIndexChanged(source)
             }
         }
     }

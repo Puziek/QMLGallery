@@ -17,6 +17,8 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: { console.debug("TEST") }
+        onReleased: { console.debug("KURDE") }
     }
 
     states: [
